@@ -3,14 +3,18 @@ import asyncio
 from aiogram import Bot
 from aiogram import Dispatcher
 
+from aiogram.client.default import DefaultBotProperties
+
 from app.config import *
 
 from app.bot.handlers.reply import router
 from app.mail.imap_client import start_listener
 
 bot = Bot(
-    BOT_TOKEN,
-    parse_mode="HTML"
+    token=BOT_TOKEN,
+    default=DefaultBotProperties(
+        parse_mode="HTML"
+    )
 )
 
 dp = Dispatcher()
