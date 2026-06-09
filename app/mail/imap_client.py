@@ -1,14 +1,19 @@
 import asyncio
 import imaplib
 import email
+import logging
 
 from aiogram import Bot
 
 from app.config import *
 from app.bot.keyboards.mail_keyboard import reply_keyboard
+import traceback
+
+logging.basicConfig(level=logging.INFO)
 
 async def start_listener(bot: Bot):
-
+    logging.info("IMAP listener started")
+    
     while True:
 
         try:
@@ -18,14 +23,14 @@ async def start_listener(bot: Bot):
                 YANDEX_EMAIL,
                 YANDEX_PASSWORD
             )
-
+            logging.info("Logged into IMAP")
             mail.select("INBOX")
 
             status, messages = mail.search(
                 None,
                 "UNSEEN"
             )
-
+            logging.info(f"Found messages: {messages}")
             for num in messages[0].split():
 
                 _, data = mail.fetch(
@@ -74,7 +79,7 @@ async def start_listener(bot: Bot):
 
             mail.logout()
 
-        except Exception as e:
-            print(e)
+        except Exception:
+            traceback.print_exc()
 
         await asyncio.sleep(10)

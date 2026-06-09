@@ -1,14 +1,19 @@
 import asyncio
+import logging
 
-from aiogram import Bot
-from aiogram import Dispatcher
-
+from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 
 from app.config import *
 
 from app.bot.handlers.reply import router
+from app.bot.handlers.start import router as start_router
+from app.bot.handlers.reply import router as reply_router
 from app.mail.imap_client import start_listener
+
+logging.basicConfig(
+    level=logging.INFO
+)
 
 bot = Bot(
     token=BOT_TOKEN,
@@ -19,9 +24,12 @@ bot = Bot(
 
 dp = Dispatcher()
 
-dp.include_router(router)
+dp.include_router(start_router)
+dp.include_router(reply_router)
 
 async def main():
+
+    logging.info("Bot starting...")
 
     asyncio.create_task(
         start_listener(bot)
