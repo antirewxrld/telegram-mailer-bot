@@ -2,6 +2,7 @@ import asyncio
 import imaplib
 import email
 import logging
+from html import escape
 
 from aiogram import Bot
 
@@ -68,6 +69,9 @@ async def start_listener(bot: Bot):
                         decode=True
                     ).decode()
 
+                sender = escape(sender)
+                subject = escape(subject)
+                text = escape(text)
                 await bot.send_message(
                     ADMIN_ID,
                     f"📩 <b>Новое письмо</b>\n\n"
