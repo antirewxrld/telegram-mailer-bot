@@ -9,6 +9,7 @@ from aiogram import Bot
 from app.config import *
 from app.bot.keyboards.mail_keyboard import reply_keyboard
 import traceback
+from email.utils import parseaddr
 
 logging.basicConfig(level=logging.INFO)
 
@@ -72,13 +73,17 @@ async def start_listener(bot: Bot):
                 sender = escape(sender)
                 subject = escape(subject)
                 text = escape(text)
+                sender_name, sender_email = parseaddr(sender)
                 await bot.send_message(
                     ADMIN_ID,
                     f"📩 <b>Новое письмо</b>\n\n"
-                    f"<b>От:</b> {sender}\n"
+                    f"<b>От:</b> {sender_name} ({sender_email})\n"
                     f"<b>Тема:</b> {subject}\n\n"
                     f"{text[:3000]}",
-                    reply_markup=reply_keyboard(1)
+                    reply_markup=reply_keyboard(
+                        sender_email,
+                        subject
+                        )
                 )
 
             mail.logout()
