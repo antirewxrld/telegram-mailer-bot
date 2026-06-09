@@ -1,0 +1,7 @@
+aiogram
+aioimaplib
+aiosmtplib
+python-dotenv
+beautifulsoup4
+sqlalchemy
+aiosqlite

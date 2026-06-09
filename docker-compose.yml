@@ -1,0 +1,7 @@
+services:
+
+  telegram-mailer-bot:
+    build: .
+    restart: always
+    env_file:
+      - .env
